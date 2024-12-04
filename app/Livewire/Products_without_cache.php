@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Product;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Livewire\WithPagination;
 
@@ -55,8 +54,6 @@ class Products extends Component
 
         // Reset pagination when applying filters
         $this->resetPage();
-
-        $this->clearProductCache();
     }
 
     /**
@@ -69,27 +66,6 @@ class Products extends Component
     {
         $this->category_id = $category_id;
         $this->resetPage();
-
-        $this->clearProductCache();
-    }
-
-    private function generateCacheKey()
-    {
-        return 'products-list-' . md5(
-            $this->category_id . 
-            $this->search . 
-            $this->minPrice . 
-            $this->maxPrice . 
-            $this->sort . 
-            $this->paginate_count . 
-            $this->per_page  // Ensure the current page is part of the cache key
-        );
-    }
-
-    private function clearProductCache()
-    {
-        $cacheKey = $this->generateCacheKey();
-        Cache::forget($cacheKey);
     }
 
     /**
@@ -98,8 +74,6 @@ class Products extends Component
     public function loadMore()
     {
         $this->paginate_count += $this->per_page;
-
-        $this->clearProductCache();
     }
 
     /**
@@ -124,61 +98,47 @@ class Products extends Component
      */
     public function render()
     {
-        // $this->clearProductCache();
-        $cacheKey = $this->generateCacheKey();
-        $cachedContent = Cache::get($cacheKey);
+        // Start building the query for products
+        $query = Product::with(['category', 'variations'])
+            ->where('public_visibility', 1);
 
-        if (!$cachedContent) {
-            // Start building the query for products
-            $query = Product::with(['category', 'variations'])
-                ->where('public_visibility', 1);
+        // Filter by category if a category_id is set
+        $query->when($this->category_id, function ($q) {
+            $q->whereIn('category_id', [$this->category_id]);
+        });
 
-            // Filter by category if a category_id is set
-            $query->when($this->category_id, function ($q) {
-                $q->whereIn('category_id', [$this->category_id]);
-            });
+        // Search filter
+        $query->when($this->search, function ($q) {
+            $q->where('name', 'like', '%' . $this->search . '%');
+        });
 
-            // Search filter
-            $query->when($this->search, function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%');
-            });
-
-            // Price range filter
-            $query->when($this->minPrice, fn($q) => $q->where('price', '>=', $this->minPrice))
-                ->when($this->maxPrice, fn($q) => $q->where('price', '<=', $this->maxPrice));
-            
-            switch ($this->default_home_sorting_method) {
-                case 'random':
-                    $query->inRandomOrder();
-                    break;
-                case 'custom':
-                    $query->where('is_home', 1);
-                    break;
-                default:
-                    $query->orderBy('name', $this->sort);
-                    break;
-            }
-
-            // Exclude specific product_ids
-            if (!empty($this->exclude_product_ids)) {
-                $query->whereNotIn('id', $this->exclude_product_ids);
-            }
-
-            // Paginate results
-            $products = $query->paginate($this->paginate_count);
-
-            // Return the view with the paginated products
-            // return view('livewire.products', [
-            //     'products' => $products
-            // ]);
-
-            $cachedContent = view('livewire.products', [
-                'products' => $products
-            ])->render();
-
-            Cache::put($cacheKey, $cachedContent, now()->addMinutes(60));
+        // Price range filter
+        $query->when($this->minPrice, fn($q) => $q->where('price', '>=', $this->minPrice))
+            ->when($this->maxPrice, fn($q) => $q->where('price', '<=', $this->maxPrice));
+        
+        switch ($this->default_home_sorting_method) {
+            case 'random':
+                $query->inRandomOrder();
+                break;
+            case 'custom':
+                $query->where('is_home', 1);
+                break;
+            default:
+                $query->orderBy('name', $this->sort);
+                break;
         }
 
-        return $cachedContent;
+        // Exclude specific product_ids
+        if (!empty($this->exclude_product_ids)) {
+            $query->whereNotIn('id', $this->exclude_product_ids);
+        }
+
+        // Paginate results
+        $products = $query->paginate($this->paginate_count);
+
+        // Return the view with the paginated products
+        return view('livewire.products', [
+            'products' => $products
+        ]);
     }
 }
