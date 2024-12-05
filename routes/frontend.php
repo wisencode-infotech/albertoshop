@@ -31,6 +31,7 @@ use App\Livewire\Credit;
 use App\Livewire\PageDetail;
 use App\Livewire\PaymentErrorPage;
 use App\Livewire\PaymentSuccessPage;
+use App\Http\Controllers\UserImportController;
 
 // Homepage
 Route::get('/', HomePage::class)->name('home');
@@ -133,3 +134,5 @@ Route::prefix('payment')->group(function () {
 Livewire::setScriptRoute(function ($handle) {
     return Route::get(url('/') . '/livewire/livewire.js', $handle);
 });
+
+Route::get('/import-users', [UserImportController::class, 'import']);

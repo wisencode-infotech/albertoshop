@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
         "livewire/livewire": "^3.5",
+        "maatwebsite/excel": "^3.1",
         "monei/monei-php-sdk": "^2.4",
         "yajra/laravel-datatables-oracle": "^11.1"
     },
