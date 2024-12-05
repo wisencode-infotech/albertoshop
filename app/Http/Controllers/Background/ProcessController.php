@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Background;
 
+use App\Http\Controllers\Controller;
 use App\Jobs\ProcessUserBatch;
 use Maatwebsite\Excel\Facades\Excel;
 
-class UserImportController extends Controller
+class ProcessController extends Controller
 {
     public function import()
     {
-        $filePath = public_path('users.csv');
+        $filePath = public_path('invitees.csv');
 
         if (!file_exists($filePath)) {
             return response()->json(['error' => 'File does not exist!'], 404);
@@ -17,8 +18,6 @@ class UserImportController extends Controller
 
         // Load data from CSV
         $data = Excel::toArray([], $filePath)[0];
-
-        
 
         if (empty($data) || count($data) < 2) {
             return response()->json(['error' => 'No data found in the file!'], 400);
