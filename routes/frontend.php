@@ -136,10 +136,10 @@ Livewire::setScriptRoute(function ($handle) {
 });
 
 
-Route::prefix('background')->group(function () {
-    Route::prefix('process')->group(function () {
-        Route::get('/import-users', [ProcessController::class, 'import']);
-    });
-});
+// Route::prefix('background')->group(function () {
+//     Route::prefix('process')->group(function () {
+//         Route::get('/import-users', [ProcessController::class, 'import']);
+//     });
+// });
 
 
