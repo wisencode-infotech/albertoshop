@@ -35,8 +35,8 @@ class ProcessUserBatch implements ShouldQueue
     {
         foreach ($this->rows as $key => $row) {
             $name = $row[0] ?? null;
-            // $email = $row[1] ?? null;
-            $email = 'test@gmail.com';
+            $email = $row[1] ?? null;
+            // $email = 'test@gmail.com';
             $phone = $row[2] ?? null;
 
             if (!$name || !$email || !$phone) {
