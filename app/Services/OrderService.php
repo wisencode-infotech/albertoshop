@@ -30,6 +30,10 @@ class OrderService
 
         $this->order->save();
 
+        if($status == 2){
+            // $this->sendWhatsappMessage();
+        }
+
         $this->sendStatusChangedEmail();
     }
 
@@ -74,6 +78,61 @@ class OrderService
         // Send email notification for order status change
         if ( !empty($this->order->customer) )
             Mail::to($this->order->customer_contact_email)->queue(new OrderStatusChangedMail($this->order));
+    }
+
+    protected function sendWhatsAppMessage() {
+
+        $shipping_address = $this->order->address->shippingAddress;
+
+        $phone_number = $this->order->customer_contact_number ?? '';
+
+        if(empty($phone_number)){
+            $phone_number = $this->order->user->phone;
+        }
+
+        $phone_number_id = 497799816752273;
+        $access_token = "EAAOLwrJ6Rq4BO3PgIT1eOFt6goDjVkwfQbDCo2dBF0cak4XDP6a1nZBQrblzQaIWsI3tjt2ZCyIgNi3ZA4J46z9QYrSRTcuzoIQwmgZC6AsRXNfZBNUwQjmkOeX7CB0Y08yYaNXqm62tQl3mCSzmVz84BpB3lRZBZBSmvum6EWkWQOBhBMS2cHgqqRZBbqAUat6fbbEZCu0ZAAnbGeFDw8CcHqFoGfrsjA"; // Replace with your Access Token
+        $url = "https://graph.facebook.com/v16.0/$phone_number_id/messages";
+    
+        $data = [
+            "messaging_product" => "whatsapp",
+            // "to" => $phone_number,
+            "to" => 919714019429,
+            "type" => "template",
+            "template" => [
+                "name" => "order_management_1", // Your approved template name
+                "language" => ["code" => "en_US"],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            ["type" => "text", "text" => $this->order->user->name],
+                            ["type" => "text", "text" => $this->order->user->phone],
+                            ["type" => "text", "text" => $shipping_address->address],
+                            ["type" => "text", "text" => $shipping_address->postal_code],
+                            ["type" => "text", "text" => $shipping_address->city]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+    
+        $headers = [
+            "Content-Type: application/json",
+            "Authorization: Bearer $access_token"
+        ];
+    
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+        $response = curl_exec($ch);
+        curl_close($ch);
+        dd($response);
+        return $response;
     }
 
     public function saveOrderTransaction($transaction_id, $status) 

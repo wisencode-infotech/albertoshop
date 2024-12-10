@@ -97,4 +97,14 @@ class Order extends Model
         else    
             return $this->customer->email;
     }
+
+    public function getCustomerContactNumberAttribute()
+    {
+        $order_extra_information = json_decode($this->extra_information, true);
+
+        if (!empty($order_extra_information) && !empty($order_extra_information['customer_contact_phone']))
+            return $order_extra_information['customer_contact_phone'];
+        else    
+            return $this->customer->email;
+    }
 }
