@@ -91,7 +91,7 @@ class OrderService
         }
 
         $phone_number_id = 497799816752273;
-        $access_token = "EAAOLwrJ6Rq4BO3PgIT1eOFt6goDjVkwfQbDCo2dBF0cak4XDP6a1nZBQrblzQaIWsI3tjt2ZCyIgNi3ZA4J46z9QYrSRTcuzoIQwmgZC6AsRXNfZBNUwQjmkOeX7CB0Y08yYaNXqm62tQl3mCSzmVz84BpB3lRZBZBSmvum6EWkWQOBhBMS2cHgqqRZBbqAUat6fbbEZCu0ZAAnbGeFDw8CcHqFoGfrsjA"; // Replace with your Access Token
+        $access_token = "EAAOLwrJ6Rq4BO1N1e5BVAofeRHT0nZAmUr4B1rZCL5AZAcfOAqjzJCwazJC8rAQRQYqfaAM4GddsTfcojO1uZByRLQX0WU36rJGxzaeQtqNv5pZBiiYrFZAb9z3zdPZCDSRGdwteDpn9QNviiZAhALoGVPwxCfhKw2XhVvvQEz9vvXCAws5MjddsXZAFsYCHxPmvxC6ZB05c7Ijui5CJjm9DCNjjbel4YZD"; // Replace with your Access Token
         $url = "https://graph.facebook.com/v16.0/$phone_number_id/messages";
     
         $data = [
@@ -100,17 +100,17 @@ class OrderService
             "to" => 919714019429,
             "type" => "template",
             "template" => [
-                "name" => "order_management_1", // Your approved template name
-                "language" => ["code" => "en_US"],
+                "name" => "custom_order_accepted", // Your approved template name
+                "language" => ["code" => "en"],
                 "components" => [
                     [
                         "type" => "body",
                         "parameters" => [
                             ["type" => "text", "text" => $this->order->user->name],
+                            ["type" => "text", "text" => $this->order->order_number],
+                            ["type" => "text", "text" => $this->order->total_price],
                             ["type" => "text", "text" => $this->order->user->phone],
-                            ["type" => "text", "text" => $shipping_address->address],
-                            ["type" => "text", "text" => $shipping_address->postal_code],
-                            ["type" => "text", "text" => $shipping_address->city]
+                            ["type" => "text", "text" => $shipping_address->full_address]
                         ]
                     ]
                 ]
@@ -131,7 +131,7 @@ class OrderService
     
         $response = curl_exec($ch);
         curl_close($ch);
-        dd($response);
+        // dd($response);
         return $response;
     }
 
