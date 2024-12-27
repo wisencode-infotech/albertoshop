@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Product;
+use Illuminate\Support\Facades\Cache;
 
 class ProductDetail extends Component
 {
@@ -13,24 +14,28 @@ class ProductDetail extends Component
 
     public function mount($product_slug)
     {
-        $this->product = Product::authenticated()
-            ->with(['category', 'images']) // Add any related models here to eager load
-            ->where('slug', $product_slug)
-            ->first();
+        // Use caching for product lookup if appropriate for performance
+        $this->product = Cache::remember("product_{$product_slug}", 60, function () use ($product_slug) {
+            return Product::authenticated()
+                ->with(['category:id,name', 'images:id,product_id,image_path'])
+                ->where('slug', $product_slug)
+                ->first();
+        });
 
         if (!$this->product)
             abort(404, "product_not_found");
 
-        $this->setMeta();
+        $this->setMeta(); // Set meta info after product retrieval
     }
 
     public function setMeta()
     {
-        $image = $this->product->display_image_url;
-
-        $this->meta['keywords'] = $this->product->name ?? '';
-        $this->meta['description'] = $this->product->description ?? '';
-        $this->meta['og:image'] = $image ?? '';
+        // Check if product exists, set meta properties
+        $this->meta = [
+            'keywords' => $this->product->name ?? '',
+            'description' => $this->product->description ?? '',
+            'og:image' => $this->product->display_image_url ?? ''
+        ];
     }
 
     public function render()
