@@ -88,7 +88,7 @@
                 <div class="flex items-center space-x-4 rtl:space-x-reverse mr-3">
                     <div class="hidden lg:inline-flex"></div>
                     <a wire:navigate href="{{ route('frontend.login') }}"
-                        class="hidden h-9 shrink-0 items-center justify-center rounded border border-transparent bg-accent px-3 py-0 text-sm font-semibold leading-none text-light outline-none transition duration-300 ease-in-out hover:bg-accent-hover focus:shadow focus:outline-none focus:ring-1 focus:ring-accent-700 sm:inline-flex">
+                        class="hide-on-medium h-9 shrink-0 items-center justify-center rounded border border-transparent bg-accent px-3 py-0 text-sm font-semibold leading-none text-light outline-none transition duration-300 ease-in-out hover:bg-accent-hover focus:shadow focus:outline-none focus:ring-1 focus:ring-accent-700 inline-flex">
                         <i class="fa fa-sign-in pr-2"></i> {{ __trans('Login') }}
                     </a>
                 </div>
@@ -96,7 +96,7 @@
                 <div class="flex items-center rtl:space-x-reverse">
                     <div class="hidden lg:inline-flex"></div>
                     <a wire:navigate href="{{ route('frontend.register') }}"
-                        class="hidden h-9 shrink-0 items-center justify-center rounded border border-transparent bg-accent px-3 py-0 text-sm font-semibold leading-none text-light outline-none transition duration-300 ease-in-out hover:bg-accent-hover focus:shadow focus:outline-none focus:ring-1 focus:ring-accent-700 sm:inline-flex"><i class="fa fa-user pr-2"></i> {{ __trans('Register') }}
+                        class="hide-on-medium h-9 shrink-0 items-center justify-center rounded border border-transparent bg-accent px-3 py-0 text-sm font-semibold leading-none text-light outline-none transition duration-300 ease-in-out hover:bg-accent-hover focus:shadow focus:outline-none focus:ring-1 focus:ring-accent-700 inline-flex"><i class="fa fa-user pr-2"></i> {{ __trans('Register') }}
                     </a>
                 </div>
                 @endif

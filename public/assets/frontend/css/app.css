@@ -223,6 +223,12 @@ button.reset_filter_btn:hover {
 
 }
 
+@media (max-width: 1280px) {
+    .hide-on-medium{
+        display: none;
+    }
+}
+
 /*End custom css*/
 
 /*Toaster css*/
