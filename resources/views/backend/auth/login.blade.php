@@ -51,9 +51,9 @@
                                 <div class="d-flex flex-column h-100">
                                     <div class="mb-4 mb-md-5">
                                         <a href="{{ route('frontend.home') }}" class="d-block auth-logo">
-                                            <img src="{{ URL::asset('/assets/frontend/img/header_logo.png') }}" alt="" 
+                                            <img src="{{ asset(__setting('header_logo')) }}" alt="" 
                                                 class="auth-logo-dark app-logo-as-img">
-                                            <img src="{{ URL::asset('/assets/frontend/img/header_logo.png') }}" alt="" 
+                                            <img src="{{ asset(__setting('header_logo')) }}" alt="" 
                                                 class="auth-logo-light app-logo-as-img">
                                         </a>
                                     </div>

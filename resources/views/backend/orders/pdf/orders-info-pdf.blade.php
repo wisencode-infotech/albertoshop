@@ -39,7 +39,7 @@
 
 <body>
     <div class="logo">
-        <img src="{{ public_path('assets/frontend/img/header_logo.png') }}" alt="Logo" height="80">
+        <img src="{{ asset(__setting('header_logo')) }}" alt="Logo" height="80">
     </div>
     <div class="title">Orders</div>
 

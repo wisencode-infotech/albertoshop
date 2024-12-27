@@ -8,7 +8,7 @@
                         W
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('assets/frontend/img/header_logo.png') }}" class="img-thumbnail" alt="" height="17">
+                        <img src="{{ asset(__setting('header_logo')) }}" class="img-thumbnail" alt="" height="17">
                     </span>
                 </a>
 
@@ -17,7 +17,7 @@
                         W
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('assets/frontend/img/header_logo.png') }}" class="img-thumbnail" alt="" height="19">
+                        <img src="{{ asset(__setting('header_logo')) }}" class="img-thumbnail" alt="" height="19">
                     </span>
                 </a>
             </div>

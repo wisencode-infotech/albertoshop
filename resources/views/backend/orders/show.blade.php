@@ -30,7 +30,7 @@
                 </div>
                 
                 <div class="auth-logo mb-4">
-                    <img src="{{ url('assets/frontend/img/header_logo.png') }}" class="img-fluid img-thumbnail app-logo-as-img" alt="">
+                    <img src="{{ asset(__setting('header_logo')) }}" class="img-fluid img-thumbnail app-logo-as-img" alt="">
                 </div>
             </div>
             <hr>

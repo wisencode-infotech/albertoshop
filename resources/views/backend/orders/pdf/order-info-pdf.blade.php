@@ -86,7 +86,7 @@
         <!-- Header Section -->
         <div class="header">
             <div class="logo">
-                <img src="{{ public_path('assets/frontend/img/header_logo.png') }}" alt="PuriCBD" width="100">
+                <img src="{{ asset(__setting('header_logo')) }}" alt="PuriCBD" width="100">
             </div>
             <div class="status">
 
