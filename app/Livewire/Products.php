@@ -76,7 +76,7 @@ class Products extends Component
     private function generateCacheKey()
     {
         return 'products-list-' . md5(
-            $this->category_id . 
+            (is_array($this->category_id) ? implode(',', $this->category_id) : $this->category_id ?? '') . 
             $this->search . 
             $this->minPrice . 
             $this->maxPrice . 
