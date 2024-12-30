@@ -86,7 +86,7 @@ class Products extends Component
         );
     }
 
-    private function clearProductCache()
+    public function clearProductCache()
     {
         $cacheKey = $this->generateCacheKey();
         Cache::forget($cacheKey);
@@ -124,16 +124,16 @@ class Products extends Component
      */
     public function render()
     {
-        // $this->clearProductCache();
+        // Generate cache key
         $cacheKey = $this->generateCacheKey();
-        $cachedContent = Cache::get($cacheKey);
 
-        if (!$cachedContent) {
-            // Start building the query for products
+        // Check if query result is already cached
+        $products = Cache::remember($cacheKey, now()->addMinutes(60), function () {
+            // Build the query
             $query = Product::with(['category', 'variations'])
                 ->where('public_visibility', 1);
 
-            // Filter by category if a category_id is set
+            // Filter by category
             $query->when($this->category_id, function ($q) {
                 $q->whereIn('category_id', [$this->category_id]);
             });
@@ -146,7 +146,8 @@ class Products extends Component
             // Price range filter
             $query->when($this->minPrice, fn($q) => $q->where('price', '>=', $this->minPrice))
                 ->when($this->maxPrice, fn($q) => $q->where('price', '<=', $this->maxPrice));
-            
+
+            // Sorting method
             switch ($this->default_home_sorting_method) {
                 case 'random':
                     $query->inRandomOrder();
@@ -159,26 +160,18 @@ class Products extends Component
                     break;
             }
 
-            // Exclude specific product_ids
+            // Exclude specific product IDs
             if (!empty($this->exclude_product_ids)) {
                 $query->whereNotIn('id', $this->exclude_product_ids);
             }
 
-            // Paginate results
-            $products = $query->paginate($this->paginate_count);
+            // Return paginated results
+            return $query->paginate($this->paginate_count);
+        });
 
-            // Return the view with the paginated products
-            // return view('livewire.products', [
-            //     'products' => $products
-            // ]);
-
-            $cachedContent = view('livewire.products', [
-                'products' => $products
-            ])->render();
-
-            Cache::put($cacheKey, $cachedContent, now()->addMinutes(60));
-        }
-
-        return $cachedContent;
+        // Return the view with cached query results
+        return view('livewire.products', [
+            'products' => $products
+        ]);
     }
 }
