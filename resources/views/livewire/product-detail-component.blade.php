@@ -25,7 +25,7 @@
                 <div class="flex flex-col border-b border-border-200 border-opacity-70 md:flex-row">
                     <div class="p-6 pt-10 md:w-1/2 lg:p-14 xl:p-16">
                         <div class="mb-8 flex items-center justify-between lg:mb-10">
-                        <div role="button" class="transition-colors duration-200 bg-accent hover:bg-accent-hover focus:outline-0 rounded-full px-3 text-xs font-semibold leading-6 text-accent-contrast" wire:navigate href="{{ route('frontend.home') }}" title="Back">
+                        <div role="button" class="transition-colors duration-200 bg-accent hover:bg-accent-hover focus:outline-0 rounded-full px-3 text-xs font-semibold leading-6 text-accent-contrast" onclick="history.back()" title="Back">
                             <i class="fa fa-arrow-left mx-2"></i>
                         </div>
                         <div class="rounded-full bg-yellow-500 px-3 text-xs font-semibold leading-6 text-light">
