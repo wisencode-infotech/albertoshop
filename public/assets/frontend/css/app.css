@@ -188,6 +188,18 @@ button.reset_filter_btn:hover {
     padding: 1.2rem;
 }
 
+@media (max-width: 640px) {
+    .mobile-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (min-width: 641px) {
+    .desktop-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .header-section{
         padding: 0.8rem;
