@@ -122,6 +122,13 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->public_visibility = $request->public_visibility;
         $product->is_home = $request->is_home;
+        $product->seo_title = $request->seo_title;
+        $product->seo_description = $request->seo_description;
+        $product->seo_keywords = $request->seo_keywords;
+        $product->og_title = $request->og_title;
+        $product->og_description = $request->og_description;
+        $product->og_image = $request->og_image;
+        $product->canonical_url = $request->canonical_url;
         $product->unit_id = $request->unit_id;
         $product->save();
 
@@ -194,6 +201,13 @@ class ProductController extends Controller
         $product->public_visibility = $request->public_visibility;
         $product->is_home = $request->is_home;
         $product->unit_id = $request->unit_id;
+        $product->seo_title = $request->seo_title;
+        $product->seo_description = $request->seo_description;
+        $product->seo_keywords = $request->seo_keywords;
+        $product->og_title = $request->og_title;
+        $product->og_description = $request->og_description;
+        $product->og_image = $request->og_image;
+        $product->canonical_url = $request->canonical_url;
         $product->slug = $request->slug;
         $product->save();
 

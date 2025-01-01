@@ -135,6 +135,71 @@
                         </select>
                     </div>
 
+                    <!-- Product SEO fields -->
+                            <h4 class="header-title">SEO Fields</h4>
+
+                            <div class="mb-3">
+                                <label for="seo_title" class="form-label">Product SEO Title</label>
+                                <input type="text" name="seo_title" class="form-control @error('seo_title') is-invalid @enderror" id="seo_title" placeholder="Enter SEO Title" value="{{ old('seo_title') }}">
+                                @error('seo_title')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="seo_description" class="form-label">Product SEO Description</label>
+                                <textarea name="seo_description" class="form-control @error('seo_description') is-invalid @enderror" id="seo_description" rows="3">{{ old('seo_description') }}</textarea>
+                                @error('seo_description')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="seo_keywords" class="form-label">Product SEO Keywords</label>
+                                <input type="text" name="seo_keywords" class="form-control @error('seo_keywords') is-invalid @enderror" id="seo_keywords" placeholder="Add each keyword separated by comma. Ex - Keyword1, Keywords 2" value="{{ old('seo_keywords') }}">
+                                @error('seo_keywords')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Open Graph (OG) Fields -->
+                            <h4 class="header-title">Open Graph (OG) Fields</h4>
+
+                            <div class="mb-3">
+                                <label for="og_title" class="form-label">Product OG Title</label>
+                                <input type="text" name="og_title" class="form-control @error('og_title') is-invalid @enderror" id="og_title" placeholder="Enter OG Title" value="{{ old('og_title') }}">
+                                @error('og_title')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="og_description" class="form-label">Product OG Description</label>
+                                <textarea name="og_description" class="form-control @error('og_description') is-invalid @enderror" id="og_description" rows="4">{{ old('og_description') }}</textarea>
+                                @error('og_description')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="og_image" class="form-label">Product OG Image</label>
+                                <input type="url" name="og_image" class="form-control @error('og_image') is-invalid @enderror" id="og_image" placeholder="Enter product og image url" value="{{ old('og_image') }}">
+                                @error('og_image')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Canonical URL field (useful to prevent duplicate content issues) -->
+                            <h4 class="header-title">Canonical URL field (useful to prevent duplicate content issues)</h4>
+
+                            <div class="mb-3">
+                                <label for="canonical_url" class="form-label">Product Canonical URL</label>
+                                <input type="url" name="canonical_url" class="form-control @error('canonical_url') is-invalid @enderror" id="canonical_url" placeholder="Enter product canonical url" value="{{ old('canonical_url') }}">
+                                @error('canonical_url')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                 </div>
             </div>
         </div>
