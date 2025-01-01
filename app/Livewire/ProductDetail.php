@@ -30,11 +30,14 @@ class ProductDetail extends Component
 
     public function setMeta()
     {
-        // Check if product exists, set meta properties
+        // Check if SEO fields exist, otherwise fall back to default
         $this->meta = [
-            'keywords' => $this->product->name ?? '',
-            'description' => $this->product->description ?? '',
-            'og:image' => $this->product->display_image_url ?? ''
+            'keywords' => $this->product->seo_keywords ?: $this->product->name,
+            'description' => $this->product->seo_description ?: $this->product->description,
+            'og:title' => $this->product->og_title ?: $this->product->name,
+            'og:description' => $this->product->og_description ?: $this->product->description,
+            'og:image' => $this->product->og_image ?: $this->product->display_image_url,
+            'canonical_url' => $this->product->canonical_url ?: url()->current(),
         ];
     }
 
