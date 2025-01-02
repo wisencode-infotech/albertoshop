@@ -1,4 +1,4 @@
-<div x-data="{ initializeProductImageSlider() { 
+<div x-data="{ isZoomed: false,  initializeProductImageSlider() { 
         var productGalleryThumbs = new Swiper('#productGalleryThumbs', {
             spaceBetween: 20,
             slidesPerView: 4,
@@ -9,6 +9,10 @@
 
          var productGallery = new Swiper('#productGallery', {
             spaceBetween: 10,
+            zoom: {
+                maxRatio: 3,
+                minRatio: 1,
+            },
             thumbs: {
             swiper: productGalleryThumbs,
             },
@@ -17,6 +21,45 @@
             prevEl: '.product-gallery-prev',
             },
          });
+
+        // Enable zoom on hover and focus zoom based on mouse position
+        document.querySelectorAll('.swiper-slide img').forEach((img) => {
+            // Check if image is from the main gallery, not the thumbnails
+            if (!img.closest('.swiper-thumbs')) { 
+                img.addEventListener('mouseenter', (e) => {
+                    // Zoom in when hover starts
+                    productGallery.zoom.in();
+
+                    // Get mouse position on the image
+                    const rect = img.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left; // X position within the image
+                    const mouseY = e.clientY - rect.top; // Y position within the image
+
+                    // Calculate the percentage of the image that the mouse is over
+                    const zoomX = (mouseX / rect.width) * 100; // Percentage of width
+                    const zoomY = (mouseY / rect.height) * 100; // Percentage of height
+
+                    // Set the zoom focus area using Swiper's zoom
+                    img.style.transformOrigin = `${zoomX}% ${zoomY}%`;
+                });
+
+                img.addEventListener('mouseleave', () => {
+                    // Zoom out when hover ends
+                    productGallery.zoom.out();
+                });
+
+                // Toggle zoom on double-click
+                img.addEventListener('dblclick', () => {
+                    this.isZoomed = !this.isZoomed;
+                    if (this.isZoomed) {
+                        productGallery.zoom.in();  // Zoom in on double-click
+                    } else {
+                        productGallery.zoom.out(); // Zoom out on double-click
+                    }
+                });
+            }
+        });
+
     } }" x-init="initializeProductImageSlider()">
     <div class="min-h-full text-center md:p-5"> 
         <div class="min-w-content relative inline-block max-w-full align-middle transition-all ltr:text-left rtl:text-right opacity-100 scale-100" id="headlessui-dialog-panel-:r1:" data-headlessui-state="open">
@@ -41,13 +84,17 @@
                                         @if($product->images->isEmpty())
                                             <!-- If no product images are available, show the default image -->
                                             <div class="swiper-slide !flex items-center justify-center selection:bg-transparent swiper-slide-next" style="width: 448px;">
+                                                <div class="swiper-zoom-container">
                                                 <img alt="Default product image" loading="lazy" width="450" height="450" decoding="async" data-nimg="1" srcset="{{ $product->display_image_url }}" src="{{ $product->display_image_url }}" style="color: transparent;">
+                                                </div>
                                             </div>
                                         @else
                                             <!-- If product images are available, loop through them -->
                                             @foreach($product->images as $image)
                                                 <div class="swiper-slide !flex items-center justify-center selection:bg-transparent swiper-slide-active" style="width: 448px;">
+                                                    <div class="swiper-zoom-container">
                                                     <img alt="Product gallery" loading="lazy" width="450" height="450" decoding="async" data-nimg="1" srcset="{{ $image->image_url }}" src="{{ $image->image_url }}" style="color: transparent;">
+                                                    </div>
                                                 </div>
                                             @endforeach
                                         @endif
