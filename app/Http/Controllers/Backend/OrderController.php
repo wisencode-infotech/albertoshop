@@ -48,7 +48,7 @@ class OrderController extends Controller
                     return '<span class="badge rounded-pill badge-soft-' . $status_color . ' font-size-12">' . $status . '</span>';
                 })
                 ->addColumn('amount', function ($row) {
-                    return $row->total_price . ' ' . __appCurrencySymbol();
+                    return $row->total_price . ' ' .$row->currency->symbol;
                 })
                 ->addColumn('action', function ($row) {
                     $all_statuses = config('general.order_statuses');
