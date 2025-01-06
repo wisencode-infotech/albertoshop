@@ -18,7 +18,7 @@
             ])
         </div>
         
-        <div wire:loading.remove wire:target.except="loadMore" class="grid gap-3 mobile-grid desktop-grid">
+        <div wire:loading.remove wire:target.except="loadMore" class="grid gap-3 @if(count($products) != 1) mobile-grid @endif desktop-grid">
             @foreach ($products as $product)
                 <article wire:key="product-{{ $product->id }}"
                     class="product-card cart-type-helium h-full overflow-hidden rounded-lg bg-light transition-shadow duration-200 shadow-sm @if(isset($from_page) && $from_page == 'product_detail') {{ $from_page }} border border-200 @endif">
