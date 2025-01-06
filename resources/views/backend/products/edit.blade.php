@@ -123,6 +123,56 @@
 
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="header-title">Discount</h4>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="discount_type" class="form-label">Type</label>
+                                <select name="discount_type" class="form-select @error('discount_type') is-invalid @enderror">
+                                    <option value="">Select Discount Type</option>
+                                    <option value="percentage" {{ "percentage" == old('discount_type', $product->discount_type) ? 'selected' : '' }}>Percentage</option>
+                                    <option value="amount" {{ "amount" == old('discount_type', $product->discount_type) ? 'selected' : '' }}>Amount</option>
+                                </select>
+                                @error('discount_type')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="discount_value" class="form-label">Discount Value</label>
+                                <input type="text" name="discount_value" class="form-control @error('discount_value') is-invalid @enderror" id="discount_value" placeholder="Enter discount value" value="{{ old('discount_value', $product->discount_value) }}">
+                                @error('discount_value')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="discount_start_date" class="form-label">Discount Start Date</label>
+                                <input type="text" name="discount_start_date" class="datepicker form-control @error('discount_start_date') is-invalid @enderror" 
+                                    id="discount_start_date" placeholder="Discount Start Date" 
+                                    value="{{ old('discount_start_date', $product->discount_start_date ? \Carbon\Carbon::parse($product->discount_start_date)->format('Y-m-d') : '') }}">
+                                @error('discount_start_date')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="discount_end_date" class="form-label">Discount End Date</label>
+                                <input type="text" name="discount_end_date" class="datepicker form-control @error('discount_end_date') is-invalid @enderror" 
+                                    id="discount_end_date" placeholder="Discount End Date" 
+                                    value="{{ old('discount_end_date', $product->discount_end_date ? \Carbon\Carbon::parse($product->discount_end_date)->format('Y-m-d') : '') }}">
+                                @error('discount_end_date')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 <!-- Product Images -->
                 <div class="col-lg-6">
@@ -308,6 +358,8 @@
 @endsection
 
 @section('script')
+<script src="{{ URL::asset('assets/backend/libs/datepicker/datepicker.min.js')}}"></script>
+
 <script>
     var total_variations = '<?php echo $product->variations->isNotEmpty() ? $product->variations->count() : 0 ?>';
     let variationIndex = parseInt(total_variations) + 1;
@@ -422,6 +474,15 @@
             error: function(xhr) {
             }
         });
+    });
+
+    $(document).ready(function () {
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd', // Date format
+            autoclose: true,      // Close calendar when date is selected
+            todayHighlight: true  // Highlight today's date
+        });
+        
     });
 
 </script>

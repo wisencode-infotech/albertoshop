@@ -11,3 +11,5 @@
 <!-- Custom Css-->
 <link href="{{ URL::asset('assets/backend/css/styles.css')}}" rel="stylesheet" type="text/css">
 
+<link href="{{ URL::asset('assets/backend/libs/datepicker/datepicker.min.css')}}" rel="stylesheet" type="text/css">
+

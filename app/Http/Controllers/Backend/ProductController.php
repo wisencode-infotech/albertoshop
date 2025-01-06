@@ -130,6 +130,10 @@ class ProductController extends Controller
         $product->og_image = $request->og_image;
         $product->canonical_url = $request->canonical_url;
         $product->unit_id = $request->unit_id;
+        $product->discount_type = $request->discount_type;
+        $product->discount_value = $request->discount_value;
+        $product->discount_start_date = $request->discount_start_date;
+        $product->discount_end_date = $request->discount_end_date;
         $product->save();
 
         // Check if images were uploaded
@@ -175,6 +179,7 @@ class ProductController extends Controller
         
         $units = ProductUnit::all();
         $categories = Category::where('parent_id','!=', null)->get();
+        // $categories = Category::get();
         return view('backend.products.edit', compact('product', 'units', 'categories')); // Return the edit view
     }
 
@@ -201,6 +206,10 @@ class ProductController extends Controller
         $product->public_visibility = $request->public_visibility;
         $product->is_home = $request->is_home;
         $product->unit_id = $request->unit_id;
+        $product->discount_type = $request->discount_type;
+        $product->discount_value = $request->discount_value;
+        $product->discount_start_date = $request->discount_start_date;
+        $product->discount_end_date = $request->discount_end_date;
         $product->seo_title = $request->seo_title;
         $product->seo_description = $request->seo_description;
         $product->seo_keywords = $request->seo_keywords;

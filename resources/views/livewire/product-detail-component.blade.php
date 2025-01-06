@@ -163,6 +163,7 @@
                             {{-- <br><span><button class="mt-1 inline-block font-bold text-accent ">Read more</button></span> --}}
                         </div>
                         <span class="my-5 flex items-center md:my-10">
+
                             <ins class="text-2xl font-semibold text-accent no-underline md:text-3xl">
                                 @livewire('product-price', ['product_id' => $product->id])
                             </ins>

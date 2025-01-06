@@ -83,10 +83,10 @@ class CartHelper
 
                 $product = $db_cart_item->product;
 
-                $product_variation = ($is_product_variant) ? ProductVariation::withTrashed()->where('id', $db_cart_item->product_variation_id)->select('name', 'price')->first() : null;
+                $product_variation = ($is_product_variant) ? ProductVariation::withTrashed()->where('id', $db_cart_item->product_variation_id)->select('name', 'price', 'product_id')->first() : null;
 
-                $price = ($is_product_variant) ? ($product_variation->priceWithCurrency() ?? 0) : ($product->priceWithCurrency() ?? 0);
-
+                $price = ($is_product_variant) ? ($product_variation->discountedPriceWithCurrency() ?? 0) : ($product->discountedPriceWithCurrency() ?? 0);
+                
                 $cart_items[$product_key] = [
                     'product_id' => $product->id,
                     'product_variation_id' => $db_cart_item->product_variation_id,
@@ -105,22 +105,21 @@ class CartHelper
             $cart_items = Session::get('cart', []);
 
             foreach ($cart_items as &$item) {
-                $product = Product::where('id', $item['product_id'])->select('id', 'name', 'price')->first();
-
+                $product = Product::where('id', $item['product_id'])->first();
                 if ($product) {
                     $item['product_name'] = $product->name;
-                    $item['product_price'] = ($product->priceWithCurrency() ?? 0);
+                    $item['product_price'] = ($product->discountedPriceWithCurrency() ?? 0);
                     $item['product_picture'] = $product->display_image_url;
                 }
 
                 if (!empty($item['product_variation_id'])) {
 
-                    $product_variation = ProductVariation::withTrashed()->where('id', $item['product_variation_id'])->select('name', 'price')->first();
+                    $product_variation = ProductVariation::withTrashed()->where('id', $item['product_variation_id'])->select('name', 'price', 'product_id')->first();
 
                     if ($product)
                         $item['product_variation_name'] = $product_variation->name;
 
-                    $item['product_price'] = ($product_variation->priceWithCurrency() ?? 0);
+                    $item['product_price'] = ($product_variation->discountedPriceWithCurrency() ?? 0);
                 }
             }
 

@@ -89,10 +89,41 @@ class Product extends Model
         return ($this->price * $exchange_rate);
     }
 
-    public function getDiscountedPriceAttribute($currency_code = '') 
+    public function discountedPriceWithCurrency($currency_code = '') 
     {
-        return $this->priceWithCurrency($currency_code);
+        if (empty($currency_code)) {
+            $currency_code = __userCurrencyCode();
+        }
+
+        $exchange_rate = 1;
+        if ($currency_code != __appCurrency()->code) {
+            $currency = Currency::where('code', $currency_code)->select('exchange_rate')->first();
+            $exchange_rate = $currency->exchange_rate ?? 1;
+        }
+
+        $original_price = $this->price * $exchange_rate;
+
+        if ($this->discount_value && $this->discount_start_date && $this->discount_end_date) {
+            
+            $today = now();
+
+            if ($today->between($this->discount_start_date, $this->discount_end_date)) {
+                if ($this->discount_type === 'amount') {
+                    $discounted_price = $original_price - ($this->discount_value * $exchange_rate);
+                } elseif ($this->discount_type === 'percentage') {
+                    $discounted_price = $original_price - ($original_price * ($this->discount_value / 100));
+                } else {
+                    $discounted_price = $original_price;
+                }
+
+                $discounted_price = max($discounted_price, 0);
+                return number_format($discounted_price, 2, '.', '');
+            }
+        }
+
+        return number_format($original_price, 2, '.', '');
     }
+
 
     public function getTotalReviewsAttribute($rating = null)
     {
