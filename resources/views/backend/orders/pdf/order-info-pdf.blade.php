@@ -201,15 +201,19 @@
                 @php $subtotal += $price * $quantity; @endphp
                 @php $total += $price * $quantity; @endphp
                 @endforeach
-                <tr class="total-row" style="display: none;">
+                <tr class="total-row">
                     <td colspan="2" class="text-end" style="text-align:right">Sub Total</td>
-                    <td style="text-align: right;">{{ $currency->symbol }}{{ number_format($subtotal, 2) }}</td>
+                    <td style="text-align: right;">{{ $currency->symbol }}{{ number_format($order->subtotal_amount, 2) }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2" class="text-end" style="text-align:right">Discount</td>
+                    <td style="text-align: right;">{{ $currency->symbol }}{{ number_format($order->discount_amount, 2) }}</td>
                 </tr>
                 <tr class="total-row">
                     <td colspan="2" style="text-align: right;" class="border-0 text-end">
                         <strong>Total</strong>
                     </td>
-                    <td style="text-align: right;"><h4 class="m-0">{{ $currency->symbol }} {{ number_format($total, 2) }}</h4></td>
+                    <td style="text-align: right;"><h4 class="m-0">{{ $currency->symbol }} {{ number_format($order->total_price, 2) }}</h4></td>
                 </tr>
                 </tbody>
             </table>

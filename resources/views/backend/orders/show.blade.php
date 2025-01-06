@@ -129,7 +129,11 @@
                         @endforeach
                         <tr>
                             <td colspan="2" class="text-end">Sub Total</td>
-                            <td class="text-end">{{ $currency->symbol }}{{ number_format($subtotal, 2) }}</td>
+                            <td class="text-end">{{ $currency->symbol }}{{ number_format($order->subtotal_amount, 2) }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-end">Discount</td>
+                            <td class="text-end">{{ $currency->symbol }}{{ number_format($order->discount_amount, 2) }}</td>
                         </tr>
                         <!-- <tr>
                             <td colspan="2" class="border-0 text-end">
@@ -139,7 +143,7 @@
                             <tr>
                                 <td colspan="2" class="border-0 text-end">
                                     <strong>Total</strong></td>
-                                    <td class="border-0 text-end"><h4 class="m-0">{{ $currency->symbol }} {{ number_format($total, 2) }}</h4></td>
+                                    <td class="border-0 text-end"><h4 class="m-0">{{ $currency->symbol }} {{ number_format($order->total_price, 2) }}</h4></td>
                                 </tr>
                             </tbody>
                         </table>

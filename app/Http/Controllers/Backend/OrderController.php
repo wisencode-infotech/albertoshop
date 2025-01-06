@@ -141,7 +141,6 @@ class OrderController extends Controller
 
     public function bulkExportWithMultiOrders($orders, $options = [])
     {
-
         $export_name = $options['export_as'] ?? 'exported-orders.pdf';
 
         $pdf = PDF::loadView('backend.orders.pdf.orders-info-pdf', [

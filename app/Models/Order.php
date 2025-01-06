@@ -107,4 +107,24 @@ class Order extends Model
         else    
             return $this->customer->email;
     }
+
+    public function getSubtotalAmountAttribute()
+    {
+        $order_extra_information = json_decode($this->extra_information, true);
+
+        if (!empty($order_extra_information) && !empty($order_extra_information['subtotal_amount']))
+            return $order_extra_information['subtotal_amount'];
+        else    
+            return $this->total_price;
+    }
+
+    public function getDiscountAmountAttribute()
+    {
+        $order_extra_information = json_decode($this->extra_information, true);
+
+        if (!empty($order_extra_information) && !empty($order_extra_information['coupon_discount_amount']))
+            return $order_extra_information['coupon_discount_amount'];
+        else    
+            return 0;
+    }
 }

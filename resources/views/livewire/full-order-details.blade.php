@@ -70,8 +70,8 @@
         @endif
         </div>
         <div class="flex w-full flex-col px-5 py-4 md:w-2/5">
-            <div class="mb-3 flex justify-between"><span class="text-sm text-body">Sub Total</span><span class="text-sm text-heading">{{ $order_data->currency->symbol . ' ' . number_format($order_data->total_price, 2) }}</span></div>
-            <div class="mb-3 flex justify-between"><span class="text-sm text-body">Discount</span><span class="text-sm text-heading">{{ $order_data->currency->symbol }}0.00</span></div>
+            <div class="mb-3 flex justify-between"><span class="text-sm text-body">Sub Total</span><span class="text-sm text-heading">{{ $order_data->currency->symbol . ' ' . number_format($order_data->subtotal_amount, 2) }}</span></div>
+            <div class="mb-3 flex justify-between"><span class="text-sm text-body">Discount</span><span class="text-sm text-heading">{{ $order_data->currency->symbol }} {{ number_format($order_data->discount_amount, 2) }}</span></div>
             <div class="mb-3 flex justify-between"><span class="text-sm text-body">Delivery Fee</span><span class="text-sm text-heading">{{ $order_data->currency->symbol }}0.00</span></div>
             <div class="mb-3 flex justify-between"><span class="text-sm text-body">Tax</span><span class="text-sm text-heading">{{ $order_data->currency->symbol }}0.00</span></div>
             <div class="flex justify-between"><span class="text-sm font-bold text-heading">Total</span><span class="text-sm font-bold text-heading">{{ $order_data->currency->symbol . ' ' . number_format($order_data->total_price, 2) }}</span></div>

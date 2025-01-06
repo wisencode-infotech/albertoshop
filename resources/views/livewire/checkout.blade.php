@@ -191,6 +191,7 @@
                </div>
                 @endforeach
             </div>
+            
             <div class="mt-4 space-y-2">
                <div class="flex justify-between">
                   <p class="text-sm text-body font-semibold">{{ __trans('Sub Total') }}</p>
@@ -208,8 +209,44 @@
                   <p class="text-base font-semibold text-heading">{{ __trans('Total') }}</p>
                   <span class="text-base font-semibold text-heading">{{ __userCurrencySymbol() }} {{ number_format($total_price, 2) }}</span>
                </div>
+
+               @if ($discount_amount > 0)
+                  <div class="flex justify-between pt-3 border-t-4 border-double border-border-200">
+                     <p class="text-base font-semibold text-heading">{{ __trans('Discount') }}</p>
+                     <span class="text-base font-semibold text-heading">{{ __userCurrencySymbol() }} {{ number_format($discount_amount, 2) }}</span>
+                  </div>
+
+                  <div class="flex justify-between pt-3 border-t-4 border-double border-border-200">
+                     <p class="text-base font-semibold text-heading">{{ __trans('Final Price') }}</p>
+                     <span class="text-base font-semibold text-heading">{{ __userCurrencySymbol() }} {{ number_format($final_price, 2) }}</span>
+                  </div>
+               @endif
+
             </div>
-            <div class="p-5 mt-10 border border-gray-200 bg-light">
+
+            <!-- Coupon Code Section -->
+            <div class="p-5 mt-5 border border-gray-200 bg-light">
+               <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-3 rtl:space-x-reverse md:space-x-4">
+                     <label class="mb-5 block text-base font-semibold text-heading" id="headlessui-label-:rg:" role="none">{{ __trans('Apply Coupon Code') }}</label>
+                  </div>
+               </div>
+               <div class="flex space-x-4 rtl:space-x-reverse">
+                  <input wire:model="coupon_code" class="form-control flex-grow" placeholder="{{ __trans('Enter coupon code') }}" type="text">
+                  <button wire:click="applyCouponCode" class="font-semibold  transition duration-300 ease-in-out focus:outline-0 focus:shadow focus:ring-1 focus:ring-accent-700 bg-accent text-accent-contrast border border-transparent hover:bg-accent-hover w-full">{{ __trans('Apply') }}</button>
+               </div>
+               @if ($coupon_error)
+                  <p class="text-red-500 text-sm mt-2">{{ $coupon_error }}</p>
+               @endif
+
+               @if ($coupon_success)
+                  <p class="text-accent text-sm mt-2">{{ $coupon_success }}</p>
+               @endif
+
+               @error('coupon_code') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="p-5 mt-5 border border-gray-200 bg-light">
                <div id="headlessui-radiogroup-:rf:" role="radiogroup" aria-labelledby="headlessui-label-:rg:">
                   <label class="mb-5 block text-base font-semibold text-heading" id="headlessui-label-:rg:" role="none">{{ __trans('Choose Payment Method') }}</label>
                   <div class="mb-8 grid grid-cols-2 gap-4 md:grid-cols-2" role="none">
@@ -228,7 +265,7 @@
                 @endif
             </div>
 
-            <div class="p-5 mt-10 border border-gray-200 bg-light">
+            <div class="p-5 mt-5 border border-gray-200 bg-light">
                <div id="headlessui-radiogroup-:rf:" role="radiogroup" aria-labelledby="headlessui-label-:rg:">
                   <label class="mb-5 block text-base font-semibold text-heading" id="headlessui-label-:rg:" role="none">{{ __trans('Shipping Method') }}</label>
                   <div class="mb-8 grid grid-cols-2 gap-4 md:grid-cols-2" role="none">
@@ -257,7 +294,6 @@
          </div>
       </div>
    </div>
-
 </div>
 
 

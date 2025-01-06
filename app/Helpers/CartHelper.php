@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Cart;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\Order;
@@ -241,18 +242,36 @@ class CartHelper
 
     public static function createOrder($data = [])
     {
+        if ($data['final_price'] > 0) {
+            $total_price = $data['final_price'];
+        } else {
+            $total_price = $data['total_price'];
+        }
+
         // Create Order
         $order = new Order();
         $order->user_id = Auth::user()->id;
         $order->currency_id = $data['currency']->id;
         $order->status = 1;
-        $order->total_price = $data['total_price'];
+        $order->total_price = $total_price;
         $order->extra_information = json_encode([
                 'customer_contact_phone' => $data['phone'],
                 'customer_contact_email' => $data['email'],
                 'customer_additional_notes' => $data['order_notes'],
+                'coupon_code' => $data['coupon_code'] ?? null,
+                'coupon_discount_amount' => $data['coupon_discount_amount'] ?? null,
+                'subtotal_amount' => $data['total_price'] ?? null,
             ]);
         $order->save();
+
+        if ($data['coupon_discount_amount'] > 0) {
+            $coupon = Coupon::where('code', $data['coupon_code'])->first();
+
+            if(!empty($coupon)){
+                $coupon->usage_limit = $coupon->usage_limit - 1;
+                $coupon->save();
+            }
+        }
 
         // Save Order Address
         OrderAddress::create([
@@ -278,7 +297,7 @@ class CartHelper
         Payment::create([
             'order_id' => $order->id,
             'payment_method_id' => $data['payment_method_id'],
-            'amount' => $data['total_price'],
+            'amount' => $total_price,
             'status' => 'pending', // Change as per your payment status logic
         ]);
 

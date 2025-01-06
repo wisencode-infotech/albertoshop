@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Coupon;
 
 class Checkout extends Component
 {
@@ -30,6 +31,13 @@ class Checkout extends Component
     public $order_notes;
     public $isPlacingOrder = false;
     public $copy_to_billing = false;
+
+    public $coupon_code;
+    public $discount_type = null;
+    public $discount_amount = 0;
+    public $coupon_error;
+    public $coupon_success;
+    public $final_price;
     
     protected $listeners = ['addressSaved' => 'loadAddresses'];
 
@@ -135,6 +143,38 @@ class Checkout extends Component
         
     }
 
+    public function resetCoupan()
+    {
+        $this->coupon_error = null;
+        $this->coupon_success = null;
+        $this->discount_amount = 0;
+        $this->final_price = 0;
+    }
+
+    public function applyCouponCode()
+    {
+        $this->resetCoupan();
+
+        if (!$this->coupon_code) {
+            $this->coupon_error = 'Please enter a coupon code.';
+            return;
+        }
+
+        $coupon = Coupon::where('code', $this->coupon_code)->first();
+
+        if ($coupon && $coupon->isValid()) {
+            $discount = $coupon->calculateDiscount($this->total_price);
+            $this->discount_amount = $discount;
+            $this->final_price = $this->total_price - $discount;
+            $this->coupon_success = 'Coupon applied successfully!';
+        } else {
+            $this->coupon_error = 'Invalid coupon code.';
+            return;
+        }
+        
+        $this->dispatch('notify', 'success', 'Coupon applied successfully!');
+    }
+
     public function placeOrder()
     {
         $this->isPlacingOrder = true;
@@ -195,6 +235,9 @@ class Checkout extends Component
                 'email' => $this->email,
                 'order_notes' => $this->order_notes,
                 'currency' => __userCurrency(),
+                'coupon_code' => $this->coupon_code,
+                'coupon_discount_amount' => $this->discount_amount,
+                'final_price' => $this->final_price,
             ]);
 
 
