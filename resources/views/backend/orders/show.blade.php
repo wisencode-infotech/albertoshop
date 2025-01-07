@@ -132,7 +132,10 @@
                             <td class="text-end">{{ $currency->symbol }}{{ number_format($order->subtotal_amount, 2) }}</td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="text-end">Discount</td>
+                            <td colspan="2" class="text-end">
+                                Discount <br>
+                                <span class="badge bg-success">{{ $order->coupon_code }}</span>
+                            </td>
                             <td class="text-end">{{ $currency->symbol }}{{ number_format($order->discount_amount, 2) }}</td>
                         </tr>
                         <!-- <tr>

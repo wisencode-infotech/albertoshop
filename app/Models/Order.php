@@ -127,4 +127,13 @@ class Order extends Model
         else    
             return 0;
     }
+
+    public function getCouponCodeAttribute()
+    {
+        $order_extra_information = json_decode($this->extra_information, true);
+        if (!empty($order_extra_information) && !empty($order_extra_information['coupon_code']))
+            return $order_extra_information['coupon_code'];
+        else    
+            return '';
+    }
 }
