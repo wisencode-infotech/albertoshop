@@ -156,6 +156,13 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('backend.coupon.index') }}" class="waves-effect">
+                        <i class="bx bx-money"></i>
+                        <span key="t-calendar">Coupans</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-head-question-outline"></i>
                         <span key="t-ecommerce">Inquiries</span>

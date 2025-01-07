@@ -22,6 +22,8 @@ use App\Http\Controllers\Backend\MyReferralController;
 use App\Http\Controllers\Backend\PayoutController;
 use App\Http\Controllers\Backend\FooterMenuSectionController;
 use App\Http\Controllers\Backend\FooterMenuSectionItemController;
+use App\Http\Controllers\Backend\CouponController;
+
 
 
 
@@ -87,4 +89,6 @@ Route::middleware(['auth', 'check.role:admin'])->group(function () {
         Route::post('banner-store', [HomePageSettingsController::class, 'bannerStore'])->name('banner-store');
         Route::post('sorting-store', [HomePageSettingsController::class, 'sortingStore'])->name('sorting-store');
     });
+
+    Route::resource('coupon', CouponController::class);
 });
