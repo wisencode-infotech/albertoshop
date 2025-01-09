@@ -17,11 +17,13 @@ class FullOrderDetails extends Component
     {
         $this->order_data = $order_data;
         $this->can_write_review = Auth::check() && $this->order_data->status == 4 && $this->order_data->updated_at->diffInDays(now()) <= 5;
+        
     }
 
     public function updateOrder($order_id)
     {
         $this->order_data = Order::find($order_id);
+        $this->can_write_review = Auth::check() && $this->order_data->status == 4 && $this->order_data->updated_at->diffInDays(now()) <= 5;
         $this->dispatch('dispatchOrderStatus', $this->order_data->status);
     }
 

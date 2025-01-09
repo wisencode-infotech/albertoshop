@@ -1,4 +1,4 @@
-<div class="flex w-full flex-col border border-border-200 bg-white">
+<div class="flex w-full flex-col border border-border-200 bg-white" style="overflow: auto;">
     @if($order_data)
     <div class="flex flex-col items-center p-5 md:flex-row md:justify-between">
         <h2 class="mb-2 flex text-sm font-semibold text-heading md:text-lg">Order Details <span class="px-2">-</span> {{ $order_data->order_number ?? $order_data->id }}</h2>
@@ -81,26 +81,6 @@
         <livewire:order-progress :currentStatus="$order_data->status" />
         <div class="rc-table orderDetailsTable w-full rc-table-fixed-header rc-table-scroll-horizontal">
             <div class="rc-table-container">
-                <div class="rc-table-header" style="overflow: hidden;">
-                    <table style="table-layout: fixed;">
-                        <colgroup>
-                            <col style="width: 398.438px;">
-                            <col style="width: 159.375px;">
-                            <col style="width: 159.375px;">
-                            <col style="width: 223.141px;">
-                            <col style="width: 17px;">
-                        </colgroup>
-                        <thead class="rc-table-thead">
-                            <tr>
-                                <th title="Item" class="rc-table-cell rc-table-cell-ellipsis" style="text-align: left;"><span class="ltr:pl-20 rtl:pr-20">Item</span></th>
-                                <th class="rc-table-cell" style="text-align: center;">Quantity</th>
-                                <th class="rc-table-cell" style="text-align: right;">Price</th>
-                                <th class="rc-table-cell" style="text-align: right;"></th>
-                                <th class="rc-table-cell rc-table-cell-scrollbar"></th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
                 <div class="rc-table-body" style="overflow: auto scroll; max-height: 500px;">
                     <table style="width: 350px; min-width: 100%; table-layout: fixed;">
                         <colgroup>
@@ -109,6 +89,14 @@
                             <col style="width: 100px;">
                             <col style="width: 140px;">
                         </colgroup>
+                        <thead class="rc-table-thead">
+                            <tr>
+                                <th title="Item" class="rc-table-cell rc-table-cell-ellipsis" style="text-align: left;"><span class="ltr:pl-20 rtl:pr-20">Item</span></th>
+                                <th class="rc-table-cell" style="text-align: center;">Quantity</th>
+                                <th class="rc-table-cell" style="text-align: right;">Price</th>
+                                <th class="rc-table-cell" style="text-align: right;"></th>
+                            </tr>
+                        </thead>
                         <tbody class="rc-table-tbody">
                             <tr aria-hidden="true" class="rc-table-measure-row" style="height: 0px; font-size: 0px;">
                                 <td style="padding: 0px; border: 0px; height: 0px;">

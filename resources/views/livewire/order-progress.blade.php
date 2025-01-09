@@ -1,5 +1,5 @@
 <div class="flex w-full items-center justify-center px-6">
-    <div class="flex w-full flex-col py-7 md:flex-row md:items-start">
+    <div class="flex w-full flex-col py-7 md:flex-row md:items-start justify-center">
         @foreach($orderStatuses as $statusKey => $statusName)
             <div class="progress-box_progress_container__n7Sm7">
                 <div class="progress-box_progress_wrapper__JZ0Ia {{ $statusKey <= $currentStatus ? 'progress-box_checked__bYvuh' : '' }}">

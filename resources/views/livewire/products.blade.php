@@ -63,12 +63,14 @@
                                 </span>
                             </div>
 
-                            @if ($product->variations()->count() > 0)
-                                <div class="flex">
-                                    @livewire('product-variation', ['product_id' => $product->id, 'layout' => 'products-list'], key('product-variation-' . $product->id), ['lazy' => true])
-                                </div>
-                            @endif
+                            
                         </div>
+
+                        @if ($product->variations()->count() > 0)
+                            <div class="flex mt-1 justify-center">
+                                @livewire('product-variation', ['product_id' => $product->id, 'layout' => 'products-list'], key('product-variation-' . $product->id), ['lazy' => true])
+                            </div>
+                        @endif
 
                     </header>
                 </article>
